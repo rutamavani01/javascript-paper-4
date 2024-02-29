@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<style>
+    body {
+        background-color: rgb(48, 48, 48) !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    span svg {
+        color: white !important;
+    }
+
+    .todo-app {
+        width: 800px;
+        height: 600px;
+        border-radius: 15px;
+        margin: 80px 0px;
+    }
+
+    .input-section {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+        height: 30px;
+    }
+
+    .input-section input[type="text"] {
+        flex-grow: 1;
+        padding: 16px;
+        border: none;
+        background-color: rgb(33, 33, 33);
+        color: #fff;
+        font-size: 16px;
+        border-radius: 30px;
+        transition: background-color 0.3s ease;
+        -webkit-box-shadow: 9px 21px 30px -19px rgba(0, 0, 0, 0.63);
+        -moz-box-shadow: 9px 21px 30px -19px rgba(0, 0, 0, 0.63);
+        box-shadow: 9px 21px 30px -19px rgba(0, 0, 0, 0.63);
+    }
+
+    .input-section input[type="text"]::placeholder {
+        color: #ddd;
+    }
+
+    .input-section input[type="text"]:focus {
+        outline: none;
+        background-color: #555;
+    }
+
+    .input-section button {
+        margin-left: 10px;
+        padding: 16px 23px;
+        border: none;
+        background-color: rgb(33, 33, 33);
+        color: #ffffff;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        -webkit-box-shadow: 9px 21px 30px -19px rgba(0, 0, 0, 0.63);
+        -moz-box-shadow: 9px 21px 30px -19px rgba(0, 0, 0, 0.63);
+        box-shadow: 9px 21px 30px -19px rgba(0, 0, 0, 0.63);
+    }
+
+    .input-section button:hover {
+        outline: none;
+        background-color: #555;
+    }
+
+    .input-section button[type="text"]::placeholder {
+        color: #ddd;
+    }
+
+    .add {
+        margin-right: 10px;
+    }
+
+    .todos {
+        width: 100%;
+        height: 500px;
+        margin-top: 50px;
+        padding: 10px 5px;
+        background-color: rgb(33, 33, 33);
+        border-radius: 30px;
+        -webkit-box-shadow: 9px 21px 30px -19px rgba(0, 0, 0, 0.63);
+        -moz-box-shadow: 9px 21px 30px -19px rgba(0, 0, 0, 0.63);
+        box-shadow: 9px 21px 30px -19px rgba(0, 0, 0, 0.63);
+    }
+
+    .todo-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .todo-list li {
+        display: flex;
+        align-items: center;
+        padding: 7px 30px;
+        background-color: rgb(38 37 37);
+        border-radius: 80px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .todo-list li span {
+        margin-left: 10px;
+        color: #fff;
+        /* font-size: 13px */
+    }
+
+    .delete-button {
+        padding: 3px;
+        border-radius: 80px;
+    }
+
+    .delete-button :hover {
+        outline: none;
+        background-color: #555;
+    }
+
+    .todo-text {
+        color: #fff !important;
+        margin-right: auto;
+        font-size: 16px !important;
+    }
+
+    .span-button {
+        margin-left: auto;
+        display: block;
+        padding: 5px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px !important;
+
+    }
+
+    .span-button:hover {
+        background-color: rgb(52, 53, 53);
+        border-radius: 80px;
+        /* padding: 4px 6px; */
+        color: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .face {
+        width: 100px;
+        z-index: 100;
+        height: 100px;
+        /* margin: auto; */
+        top: 50%;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 30%;
+    }
+
+    .not-found {
+        color: #fff;
+        top: 60%;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 30%;
+    }
+
+    table {
+        color: wheat;
+    }
+</style>
+
+<body>
+
+    <div class="todo-app">
+        <form class="input-section">
+            <input type="hidden" id="editid">
+            <input id="list" type="text" placeholder="Add Your list..." />
+            <button id="addBtn" onclick="save()" type="submit" class="add">Add</button>
+            <button type="button" class="add" id="update-button" style="display: none">
+                Update
+            </button>
+            <input type="text" id="search-input" placeholder="Search" />
+            <button type="button" id="search-button">Search</button>
+        </form> <br><br><br>
+        <!-- <div class="todos container mt-3"> -->
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="record"></tbody>
+            </table>
+
+            <!--       
+        <img class="face" src="asetes/thinking.png" alt="">
+        <h1 class="not-found"> NOT FOUND</h1> -->
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+    let data = [];
+
+    const viewData = () => {
+        let record = JSON.parse(localStorage.getItem('user'));
+        let v = (record == null) ? [] : record;
+        let tbl = " ";
+
+        v.map((v) => {
+            tbl += `
+                <tr>
+                    <td>${v.userid}</td>
+                    <td>${v.list}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteData(${v.userid})">Delete</button>    
+                        <button class="btn btn-success" onclick="editData(${v.userid})">Edit</button>    
+                    </td>
+                </tr>
+            `
+        })
+        document.getElementById('record').innerHTML = tbl;
+    }
+    viewData();
+
+    const save = () => {
+        let userid = document.getElementById('editid').value;
+        let list = document.getElementById('list').value;
+
+        let obj = {
+            userid: Math.floor(Math.random() * 100),
+            list: list
+        }
+
+           if(userid){
+            let item = JSON.parse(localStorage.getItem('user'));
+            let alldata = item.filter((v)=>{
+                return v.userid == userid
+            })
+            document.getElementById('list').value = alldata[0].list = list;
+            localStorage.setItem('user',JSON.stringify(item));
+            alert("data updated successfully");
+            document.getElementById('editid').value = "";
+            viewData();
+
+           }else{
+        if (localStorage.getItem('user') === null || localStorage.getItem('user') === undefined) {
+            data.push(obj);
+            localStorage.setItem('user', JSON.stringify(data));
+        } else {
+            let val = JSON.parse(localStorage.getItem('user'));
+            val.push(obj);
+            localStorage.setItem('user', JSON.stringify(val));
+        }
+        alert("data saved successfully");
+        viewData();
+    }
+    document.getElementById('list').value = "";
+    }
+
+    const deleteData = (id) => {
+        let alldata = JSON.parse(localStorage.getItem('user'));
+        let ans = alldata.filter((v) => {
+            return v.userid != id;
+        })
+        localStorage.setItem('user', JSON.stringify(ans));
+        alert("data deleted successfully");
+        viewData();
+    }
+
+    const editData = (id) => {
+        let val = JSON.parse(localStorage.getItem('user'));
+        let ans = val.filter((v) => {
+            return v.userid == id;
+        })
+        document.getElementById('list').value = ans[0].list;
+        document.getElementById('editid').value = ans[0].userid;
+    }
+
+</script>
+
+</html>

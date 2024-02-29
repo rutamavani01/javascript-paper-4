@@ -1,0 +1,21 @@
+<!-- sorted array in ascending order (10 Marks)let arr = [2,25,5,35,1] -->
+<script type="text/javascript">
+    let arr = [2, 25, 5, 35, 1];
+
+    // let ans = arr.sort(function (a,b){
+    //     return a - b;
+    // })
+    // document.write(ans);
+
+    for (i = 0; i < arr.length; i++) {
+        for (j = 0; j < arr.length; j++) {
+            if (arr[i] < arr[j]) {
+                let c = arr[i];
+                arr[i] = arr[j];
+                arr[j] = c;
+            }
+        }
+    }
+    document.write(arr);
+
+</script>
